@@ -10,7 +10,7 @@ from luxtrade.config import LOG_DIR
 _FORMAT = "%(asctime)s | %(levelname)-7s | %(name)s | %(message)s"
 
 
-def setup_logging(level: int = logging.INFO, log_file: str = "pipeline.log") -> None:
+def setup_logging(level: int | str = logging.DEBUG, log_file: str = "pipeline.log") -> None:
     """Configure root logging to console and ``logs/<log_file>``."""
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(

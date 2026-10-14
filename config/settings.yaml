@@ -1,0 +1,82 @@
+project:
+  name: lux-comext
+
+eurostat:
+  files_api: "https://ec.europa.eu/eurostat/api/dissemination/files"
+
+downloads:
+  sources:
+    - name: monthly_trade
+      enabled: true
+      directory: "comext/COMEXT_DATA/PRODUCTS"
+      include:
+        - "full_v2_*.7z"
+      exclude:
+        - "full_v2_*52.7z"
+        - "full_partxiu_*.7z"
+      recursive: false
+      period:
+        from: "2002-01"
+        to: "latest"
+
+    - name: classifications
+      enabled: false
+      directory: "comext/COMEXT_METADATA/CLASSIFICATIONS_AND_RELATIONS"
+      include:
+        - "**/*"
+      exclude: []
+      recursive: true
+
+    - name: monthly_metadata
+      enabled: false
+      directory: "comext/COMEXT_METADATA/MONTHLY_METADATA"
+      include:
+        - "**/*"
+      exclude: []
+      recursive: true
+
+    - name: documentation
+      enabled: false
+      directory: "comext/COMEXT_METADATA/DOCS_AND_GUIDES"
+      include:
+        - "**/*"
+      exclude: []
+      recursive: true
+
+    - name: historical_trade
+      enabled: false
+      directory: "comext/COMEXT_HISTORICAL_DATA"
+      include:
+        - "**/*.7z"
+        - "**/*.zip"
+      exclude: []
+      recursive: true
+
+filters:
+  declarant:
+    - "LU"
+  partner:
+    - "*"
+  flow:
+    - 1
+    - 2
+  product:
+    - "*"
+  date:
+    - "20*"
+
+storage:
+  raw_dir: "data/raw"
+  extracted_dir: "data/extracted"
+  processed_dir: "data/processed"
+  metadata_dir: "data/metadata"
+  database_path: "data/database/comext.duckdb"
+
+processing:
+  batch_size: 200000
+  commit_interval_seconds: 10
+  preserve_source_columns: true
+  preserve_original_archives: true
+
+logging:
+  level: DEBUG

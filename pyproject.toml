@@ -3,34 +3,45 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "luxtrade"
+name = "lux-comext"
 version = "0.1.0"
-description = "Interactive exploration of Luxembourg's external trade in goods (STATEC Hackathon 2026, The Outliers)"
+description = "Offline Luxembourg Comext trade ingestion and query application"
 readme = "README.md"
-license = "EUPL-1.2"
+license = { text = "MIT" }
 requires-python = ">=3.12"
-authors = [{ name = "The Outliers (Behrooz Delfanian, Mina Naseh, Kasra)" }]
+authors = [{ name = "The Outliers" }]
+dependencies = [
+    "duckdb>=1.5.6",
+    "pandas>=2.2.3",
+    "pyarrow>=18.1.0",
+    "py7zr>=1.0.0",
+    "PyYAML>=6.0.2",
+    "requests>=2.32.2",
+    "typer>=0.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.2",
+    "ruff>=0.6.9",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-extend-include = ["*.ipynb"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "PD", "D"]
-ignore = ["D100", "D104", "D203", "D213"]
+select = ["E", "F", "W", "I"]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = ["D"]
-"notebooks/**" = ["D", "E501"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "-ra -m 'not slow and not network'"
-markers = [
-    "slow: long-running tests (deselected by default)",
-    "network: tests that call external services (deselected by default)",
-]
+[project.scripts]
+lux-comext = "lux_comext.cli:app"
